@@ -38,4 +38,30 @@ const operate = function(a,b){
         
     }
 }
+
+
+
+/*making clock on phone and indetval every second to update*/
+let displayTime = document.getElementById("displayTime");
+function timer(){
+    displayTime.textContent = (new Date().getHours().toString().padStart(2, '0') 
+    + ":" + new Date().getMinutes().toString().padStart(2,"0"));
+}
+timer();
+setInterval(timer, 1000);
+
+
+
+
+let displayValueP = document.getElementById("displayValue");
+const buttonsContainer = document.querySelector(".buttons");
+
+buttonsContainer.addEventListener("click", function(event){
+
+    if(event.target.classList.contains("greyButton") && displayValueP.textContent.length < 9){
+        displayValueP.textContent += event.target.textContent;
+    }
+})
+
+
  
