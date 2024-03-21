@@ -18,19 +18,20 @@ const divide = function(a, b) {
 let firstNum;
 let secondNum;
 let operator;
+let stringOperator;
 
 
 const operate = function(a,b){
-    if (operator === "+"){
+    if (stringOperator === "+"){
        return add(a, b);
     }
-    else if (operator === "-"){
+    else if (stringOperator === "-"){
         return subtract(a, b);
     }
-    else if (operator === "*"){
+    else if (stringOperator === "*"){
         return multiply(a, b);
     }
-    else if (operator === "/"){
+    else if (stringOperator === "/"){
         if(b !== 0){
             return divide(a, b);
         }
@@ -62,7 +63,10 @@ buttonsContainer.addEventListener("click", function(event){
     if(event.target.classList.contains("orangeButton")){
         operator = event.target.textContent;
         operatorPressed();
-        displayValueP.textContent = "";
+        if(operator !== "="){
+            displayValueP.textContent = "";
+        }
+        
     }
     else if(event.target.textContent.includes(".") && displayValueP.textContent.includes(".")){ /*checks if the dot is already included */
         return ;
@@ -94,29 +98,38 @@ function valueSize(){ /*if its too many characters, it must change the size of i
 const upperValue = document.getElementById("secondValue");
 function operatorPressed(){
     if (operator === "=") {
-        displayValueP.textContent = eval(`${upperValue.textContent.slice(0,-1)} + ${displayValueP.textContent}`).toString();
+
+        stringOperator = upperValue.textContent.charAt(upperValue.textContent.length -1);
+        if (stringOperator === "×") {
+            stringOperator = "*";
+        }
+        else if (stringOperator === "÷"){
+            stringOperator = "/";
+        }
+        firstNum = upperValue.textContent.slice(0,-1);
+        secondNum = displayValueP.textContent;
+        
+        displayValueP.textContent = operate(parseInt(firstNum),parseInt(secondNum));
         upperValue.textContent = "";
         return;
     }
     else if (upperValue.textContent === "") {
-        upperValue.textContent = displayValueP.textContent + operator;
+        upperValue.textContent = displayValueP.textContent + (" " + operator);
     }
     else{
 
-        operator = upperValue.textContent.charAt(upperValue.textContent.length -1);
-        if (operator.toLowerCase === "x") {
-            operator === "*";
+        stringOperator = upperValue.textContent.charAt(upperValue.textContent.length -1);
+        if (stringOperator === "×") {
+            stringOperator = "*";
         }
-        else if (operator === "÷"){
-            operator === "/";
+        else if (stringOperator === "÷"){
+            stringOperator = "/";
         }
-        console.log(operator);
         firstNum = upperValue.textContent.slice(0,-1);
-        console.log(firstNum);
         secondNum = displayValueP.textContent;
-        console.log(secondNum);
+
         upperValue.textContent = operate(parseInt(firstNum),parseInt(secondNum));
-        upperValue.textContent += operator;
+        upperValue.textContent += (" " + operator);
 
     }
   
