@@ -60,20 +60,43 @@ let displayValueP = document.getElementById("displayValue");
 const buttonsContainer = document.querySelector(".buttons");
 
 buttonsContainer.addEventListener("click", function(event){
-    if(event.target.classList.contains("orangeButton")){
+    if(event.target.classList.contains("orangeButton") && (displayValueP.textContent !== "")){
         operator = event.target.textContent;
         operatorPressed();
         if(operator !== "="){
             displayValueP.textContent = "";
         }
+        valueSize(displayValueP);
+        valueSize(upperValue);
+    }
+     else if(event.target.classList.contains("lightgreyButton")){
+        operator = event.target.textContent;
+        if(operator === "AC"){/*------------------------------------------------------uporaba tipke AC */
+            displayValueP.textContent = "";
+            upperValue.textContent = "";
+            operator = "";
+            }
+        else if(operator === "±" &&  !(displayValueP.textContent === "")){/*-------------------------------------------spremeni predznak */
+
+        valueSize(displayValueP);
+        valueSize(upperValue);
+
+        }
+        else if(operator === "%" && !(displayValueP.textContent === "")){/*-----------------------------------------------------------procenti */
+        displayValueP.textContent = (displayValueP.textContent / 100);
+        valueSize(displayValueP);
+        valueSize(upperValue);
+        }
         
     }
     else if(event.target.textContent.includes(".") && displayValueP.textContent.includes(".")){ /*checks if the dot is already included */
+
         return ;
     }
-    else if (event.target.classList.contains("greyButton") && displayValueP.textContent.length < 9){/*adds number,but max 9 caracters */
+    else if (event.target.classList.contains("greyButton") && displayValueP.textContent.length < 14){/*adds number,but max 9 caracters */
         displayValueP.textContent += event.target.textContent;
-        valueSize();
+        valueSize(displayValueP);
+        valueSize(upperValue);
     }
 })
 
@@ -86,12 +109,21 @@ displayValueP.addEventListener("click", function(){
 
 
 const numberLenght = document.getElementById("displayValue")
-function valueSize(){ /*if its too many characters, it must change the size of it */
-    if(numberLenght.textContent.toString().length > 7){
-        numberLenght.style.fontSize = "60px";
+function valueSize(value){ /*if its too many characters, it must change the size of it */
+    if(value.textContent.toString().length > 14){
+        value.style.fontSize = "30px";
+    }
+    else if(value.textContent.toString().length > 11){
+        value.style.fontSize = "40px";
+    }
+    else if(value.textContent.toString().length > 9){
+        value.style.fontSize = "50px";
+    }
+    else if(value.textContent.toString().length > 7){
+        value.style.fontSize = "60px";
     }
     else{
-        numberLenght.style.fontSize = "80px";
+        value.style.fontSize = "80px";
     }
 }
 
@@ -109,7 +141,7 @@ function operatorPressed(){
         firstNum = upperValue.textContent.slice(0,-1);
         secondNum = displayValueP.textContent;
         
-        displayValueP.textContent = operate(parseInt(firstNum),parseInt(secondNum));
+        displayValueP.textContent = operate(parseFloat(firstNum),parseFloat(secondNum));
         upperValue.textContent = "";
         return;
     }
@@ -128,8 +160,10 @@ function operatorPressed(){
         firstNum = upperValue.textContent.slice(0,-1);
         secondNum = displayValueP.textContent;
 
-        upperValue.textContent = operate(parseInt(firstNum),parseInt(secondNum));
+        upperValue.textContent = operate(parseFloat(firstNum),parseFloat(secondNum));
         upperValue.textContent += (" " + operator);
+        valueSize(displayValueP);
+        valueSize(upperValue);
 
     }
   
