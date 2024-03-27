@@ -76,8 +76,16 @@ buttonsContainer.addEventListener("click", function(event){
             upperValue.textContent = "";
             operator = "";
             }
-        else if(operator === "±" &&  !(displayValueP.textContent === "")){/*-------------------------------------------spremeni predznak */
-
+        else if(operator === "±"){/*-------------------------------------------spremeni predznak */
+            if(displayValueP.textContent === ""){
+                displayValueP.textContent = "-";
+            }
+            else if(displayValueP.textContent === "-"){
+                displayValueP.textContent = "";
+            }
+            else{
+                displayValueP.textContent = displayValueP.textContent * -1;
+            }
         valueSize(displayValueP);
         valueSize(upperValue);
 
@@ -110,7 +118,10 @@ displayValueP.addEventListener("click", function(){
 
 const numberLenght = document.getElementById("displayValue")
 function valueSize(value){ /*if its too many characters, it must change the size of it */
-    if(value.textContent.toString().length > 14){
+    if(value.textContent.toString().length > 16){
+        value.style.fontSize = "23px";
+    }
+    else if(value.textContent.toString().length > 14){
         value.style.fontSize = "30px";
     }
     else if(value.textContent.toString().length > 11){
